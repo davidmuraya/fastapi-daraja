@@ -1,6 +1,4 @@
 
-from datetime import datetime
-import time
 import json
 
 from fastapi import APIRouter, Header
@@ -8,7 +6,6 @@ from fastapi import Response, status, BackgroundTasks
 from pydantic import BaseModel
 
 from mpesa_client import settings
-from mpesa_client import utils
 from mpesa_client import generate_oauth_token
 import app
 
@@ -19,16 +16,6 @@ router = APIRouter(prefix="/app/v1")
 
 # Initialize MpesaSandboxSettings
 sandbox = settings.MpesaSandboxSettings()
-
-
-# Safaricom date format is YYYYMMDDHHMMSS:
-transaction_date_time = (datetime.today()).strftime('%Y%m%d%H%M%S')
-
-# encode passkey, a base64 encoded string.
-# (The base64 string is a combination of Shortcode+Passkey+Timestamp)
-passkey = sandbox.lipa_na_mpesa_business_short_code + sandbox.passkey + transaction_date_time
-
-encoded_password = utils.base64encoder(passkey)
 
 # Safaricom Paybill Mpesa URL:
 # https://sandbox.safaricom.co.ke/mpesa/c2b/v1/simulate
@@ -46,7 +33,7 @@ class C2BMpesaResponse(BaseModel):
     MerchantRequestID: str = ""  # "29115-34620561-1",
     CheckoutRequestID: str = ""  # "ws_CO_191220191020363925",
     ResponseCode: str = "0"
-    ResponseDescription: str = "" # "Success. Request accepted for processing",
+    ResponseDescription: str = ""  # "Success. Request accepted for processing",
     CustomerMessage: str = ""  # "Success. Request accepted for processing"
 
 
@@ -71,7 +58,10 @@ async def mpesa_simulate_paybill_request_resource(response: Response, c2b_mpesa_
     if mpesa_token_response.success:
         lipa_na_mpesa_response = await simulate_c2b_mpesa_request(c2b_mpesa_request, mpesa_token_response.access_token)
         if lipa_na_mpesa_response.ResponseCode == "0":
-            pass
+            #  add logic here
+            response.status_code = status.HTTP_200_OK
+        else:
+            response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
     return c2b_response_model
 
@@ -94,9 +84,12 @@ async def simulate_c2b_mpesa_request(c2b_mpesa_request: SimulateC2BMpesaRequest,
 
     print(param)
 
-    # Make a request to generate the Mpesa token
+    # Make a request to simulate the paybill payment:
     response = await app.Http.post(url, headers=headers, data=param)
 
     print(response)
+
+    if "errorMessage" in response:
+        c2b_mpesa_response.ResponseDescription = response["errorMessage"]
 
     return c2b_mpesa_response
