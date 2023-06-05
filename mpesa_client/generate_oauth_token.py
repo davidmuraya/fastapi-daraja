@@ -77,7 +77,7 @@ async def mpesa_generate_oauth_token(username: str, password: str):
     # Create a model to store the token response
     mpesa_token_response_model = MpesaTokenResponseModel()
 
-    # Set the values in the model based on the response
+    # Set the values in the model based on the response:
     if "response_status" in response:
         mpesa_token_response_model.error = response["response_status"]
 

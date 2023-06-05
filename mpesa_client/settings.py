@@ -7,8 +7,13 @@ class MpesaSandboxSettings(BaseModel):
     """
 
     sandbox_url: str = "https://sandbox.safaricom.co.ke/"
-    consumer_key: str = "wLs9wxNfPrda0fIy7MUjwWuRWW5xQ8N5v"
-    consumer_secret: str = "hQowLbqAnrNvQVOIb"
+    consumer_key: str = "wLs9wxNfPrda0fIy7MUjwWuRWW5xQ8N5"
+    consumer_secret: str = "hQowLbqAnrNvQVOI"
+    passkey: str = "hQowLbqAnrNvQVOI"
+    confirmation_url = ""
+    validation_url = ""
+    lipa_na_mpesa_callback_url = ""
+    lipa_na_mpesa_business_short_code = "200300"
 
 
 class MpesaProductionSettings(BaseModel):

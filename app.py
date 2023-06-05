@@ -10,11 +10,15 @@ import aiohttp
 
 from fastapi import FastAPI
 
-# Authentication
+# M-Pesa Client
 from mpesa_client.generate_oauth_token import router as generate_token_routes
+from mpesa_client.lipa_na_mpesa import router as lipa_na_mpesa_routes
 
 # Confirmation:
 from mpesa_confirmation.confirmation import router as mpesa_confirmation_routes
+
+# Validation
+from mpesa_validation.validation import router as mpesa_validation_routes
 
 
 SIZE_POOL_AIOHTTP = 200
@@ -90,6 +94,7 @@ class Http:
                                "url": url,
                                "httpmethod": "postString",
                                "headers": headers,
+                               "response_status": f"{response.status}, {response.reason}",
                                "success": False}
 
                     return payload
@@ -124,17 +129,20 @@ async def on_shutdown() -> None:
 
 
 api_description = """
-**FastAPI-Daraja** 
+This is a FastAPI library based on the Safaricom M-PESA daraja API.
 
-This is a FastAPI library based on the Safaricom MPESA daraja API.
+M-Pesa is a mobile phone-based digital payment and money transfer service widely used in Kenya.
 
-MPESA Daraja API documentation can be found at https://developer.safaricom.co.ke
+FastAPI is a modern, fast (high-performance) web framework for building APIs with Python 3.7+ based on standard Python type hints.
+
+For the M-Pesa client, this library uses the python asynchronous client called aiohttp. 
+aiohttp is a versatile asynchronous HTTP client/server framework for Python that supports both client and server-side applications.
 """
 
 app = FastAPI(docs_url="/", on_startup=[on_start_up], on_shutdown=[on_shutdown], title="FastAPI Daraja",
               description=api_description, version="1.0.0", swagger_ui_parameters={"defaultModelsExpandDepth": -1})
 
-# Hide the models by adding the parametre: swagger_ui_parameters={"defaultModelsExpandDepth": -1}
+# Hide the models by adding the parameter: swagger_ui_parameters={"defaultModelsExpandDepth": -1}
 
 # Mount the folders:
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -142,6 +150,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # add the routers:
 app.include_router(generate_token_routes)
 app.include_router(mpesa_confirmation_routes)
+app.include_router(mpesa_validation_routes)
+app.include_router(lipa_na_mpesa_routes)
 
 
 # Page not found exception handler
