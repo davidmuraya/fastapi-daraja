@@ -121,15 +121,12 @@ async def on_shutdown() -> None:
 
 
 api_description = """
-**Bima-MO** is the proven middle office platform enabling the rapid launch of insurance integration across digital distribution points.
+**FastAPI-Daraja** 
 
-Rapidly connect your legacy or monolithic core systems to external channels via API; 
-keep your legacy system and hollow out its product functionality with the power of a **middle office**. 
+This is a FastAPI library based on the Safaricom MPESA daraja API.
 
-**Bima-MO** is built to make your life easier; from rapid integration to ready-to-go, rich API deployment and running your own web/mobile apps with ease.
-* **Customer-centralized platform** providing easy access client and policy and claims data.
-* Enables **digital insurance solutions** on a highly scalable, cloud-native insurance middle office with rich, ready-to-go APIs. 
-* Roadmap to include **sales and product factory** to offer flexible and quick product rollout capability."""
+MPESA Daraja API documentation can be found at https://developer.safaricom.co.ke
+"""
 
 app = FastAPI(docs_url="/", on_startup=[on_start_up], on_shutdown=[on_shutdown], title="FastAPI Daraja",
               description=api_description, version="1.0.0")

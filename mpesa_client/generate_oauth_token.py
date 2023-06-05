@@ -29,7 +29,7 @@ class MpesaTokenResponseModel(BaseModel):
 
 
 api_summary = "Mpesa Oauth End-point"
-api_description = "This API processes a receipt."
+api_description = "This API gets a token from the M-Pesa Daraja API. Use this for testing only"
 
 
 @router.get("/m-pesa/generate-token", tags=["M-pesa Authentication"], summary=api_summary, description=api_description,
