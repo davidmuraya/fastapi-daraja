@@ -101,9 +101,11 @@ async def initiate_lipa_na_mpesa_payment(lipa_na_mpesa_request: LipaNaMpesaReque
 
     print(param)
 
-    # Make a request to generate the Mpesa token
+    # Make a request to generate the STK Push:
     response = await app.Http.post(url, headers=headers, data=param)
 
     print(response)
+
+    # add processing logic here:
 
     return lipa_na_mpesa_response
