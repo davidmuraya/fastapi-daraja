@@ -1,0 +1,30 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="2">
+            <item index="0" class="java.lang.String" itemvalue="hx-get" />
+            <item index="1" class="java.lang.String" itemvalue="hx-post" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="6">
+            <item index="0" class="java.lang.String" itemvalue="pyminifier" />
+            <item index="1" class="java.lang.String" itemvalue="lxml" />
+            <item index="2" class="java.lang.String" itemvalue="uvloop" />
+            <item index="3" class="java.lang.String" itemvalue="httptools" />
+            <item index="4" class="java.lang.String" itemvalue="openpyxl" />
+            <item index="5" class="java.lang.String" itemvalue="firebase_admin" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
