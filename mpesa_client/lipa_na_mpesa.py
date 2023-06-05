@@ -51,8 +51,8 @@ class LipaNaMpesaRequest(BaseModel):
 class LipaNaMpesaResponse(BaseModel):
     MerchantRequestID: str = ""  # "29115-34620561-1",
     CheckoutRequestID: str = ""  # "ws_CO_191220191020363925",
-    ResponseCode: str = "0"
-    ResponseDescription: str = "" # "Success. Request accepted for processing",
+    ResponseCode: str = "-1"  # Default value
+    ResponseDescription: str = ""  # "Success. Request accepted for processing",
     CustomerMessage: str = ""  # "Success. Request accepted for processing"
 
 
@@ -77,8 +77,13 @@ async def mpesa_lipa_na_mpesa_resource(response: Response, lipa_na_mpesa_request
 
     if mpesa_token_response.success:
         lipa_na_mpesa_response = await initiate_lipa_na_mpesa_payment(lipa_na_mpesa_request, mpesa_token_response.access_token)
+
+        lipa_na_mpesa_response_model = lipa_na_mpesa_response
+
         if lipa_na_mpesa_response.ResponseCode == "0":
-            pass
+            response.status_code = status.HTTP_200_OK
+        else:
+            response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
     return lipa_na_mpesa_response_model
 
@@ -91,10 +96,10 @@ async def initiate_lipa_na_mpesa_payment(lipa_na_mpesa_request: LipaNaMpesaReque
     lipa_na_mpesa_resource = "mpesa/stkpush/v1/"
     lipa_na_mpesa_end_point = "processrequest"
 
-    # Create the URL for token generation
+    # Create the URL for token generation:
     url = server + lipa_na_mpesa_resource + lipa_na_mpesa_end_point
 
-    # Set the headers for the request
+    # Set the headers for the request:
     headers = {"Authorization": f"Bearer {bearer}", "Content-Type": "application/json"}
 
     param = json.dumps(lipa_na_mpesa_request.dict())
@@ -106,6 +111,14 @@ async def initiate_lipa_na_mpesa_payment(lipa_na_mpesa_request: LipaNaMpesaReque
 
     print(response)
 
-    # add processing logic here:
+    if "ResponseCode" in response:
+        lipa_na_mpesa_response.ResponseCode = response["ResponseCode"]
+        lipa_na_mpesa_response.ResponseDescription = response["ResponseDescription"]
+        lipa_na_mpesa_response.CheckoutRequestID = response["CheckoutRequestID"]
+        lipa_na_mpesa_response.CustomerMessage = response["CustomerMessage"]
+        lipa_na_mpesa_response.MerchantRequestID = response["MerchantRequestID"]
+
+    if "errorMessage" in response:
+        lipa_na_mpesa_response.ResponseDescription = response["errorMessage"]
 
     return lipa_na_mpesa_response
