@@ -29,33 +29,26 @@ class MpesaRequest(BaseModel):
     LastName: str
 
 
-class PaymentConfirmation(BaseModel):
-    receipt_id: Optional[int]
-    success: bool = False
-    errors: Optional[List[str]]
-
-
-class PaymentConfirmationResponse(BaseModel):
+class PaymentValidation(BaseModel):
     ResultCode: str = "0"
     ResultDesc: str = "Accepted"
 
 
-def create_receipt(mpesa_request: MpesaRequest, transaction_date: str):
+def some_function(customer_number: str):
+    # check if the client is valid here:
 
-    # perform system related events here e.g. create the receipt:
+    validation_response = {}
 
-    receipt = {}
-
-    return receipt
+    return validation_response
 
 
 api_summary = "Mpesa Confirmation End-point"
 api_description = "This API processes a receipt."
 
 
-@router.post("/receipts/payment-confirmation", tags=["Receipts"], summary=api_summary, description=api_description,
-             response_model=PaymentConfirmation)
-async def mpesa_confirmation_resource(background_tasks: BackgroundTasks, response: Response, mpesa_request: MpesaRequest,
+@router.post("/receipts/payment-validation", tags=["Receipts"], summary=api_summary, description=api_description,
+             response_model=PaymentValidation)
+async def mpesa_validation_resource(background_tasks: BackgroundTasks, response: Response, mpesa_request: MpesaRequest,
                                       user_agent: Union[str, None] = Header(default=None, include_in_schema=False)):
 
     # log time
@@ -74,23 +67,50 @@ async def mpesa_confirmation_resource(background_tasks: BackgroundTasks, respons
     except ValueError as e:
         error_on_date_conversion = f"M-Pesa Date conversion error: Date:{mpesa_request.TransTime} does not conform to %d %b %Y"
 
-    payment_confirmation = PaymentConfirmation()
+    payment_validation = PaymentValidation()
 
     # check if request invoice number is numeric:
     if mpesa_request.InvoiceNumber.isnumeric():
-        # do validation here:
-        # then:
-        receipt = create_receipt(mpesa_request, transaction_date)
 
+        # try and convert to int:
+        id = int(mpesa_request.InvoiceNumber)
+
+        # do further validation with id above here:
+
+        # upon failure:
+        payment_validation.ResultCode = "C2B00012"
+        payment_validation.ResultDesc = "Invalid Account Number"
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
     else:
 
-        # value supplied was not an integer, do alphanumeric validation here:
+        # value supplied was not an integer
+        # do further validation:
+        policy_number_check_response = some_function(mpesa_request.InvoiceNumber)
 
-        # add receipting creation code:
-        # create the receipt object:
-        receipt = create_receipt(mpesa_request, transaction_date)
+        if policy_number_check_response.success:
+
+            response.status_code = status.HTTP_200_OK
+
+        else:
+            # it is alphanumeric but a valid client was not found was not found:
+
+            payment_validation.ResultCode = "C2B00012"
+            payment_validation.ResultDesc = "Invalid Account Number"
+            response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
     # performance monitoring
     request_time = time.perf_counter() - start
 
-    return payment_confirmation
+    return payment_validation
+
+
+"""
+Other Result Error Codes
+ResultCode ResultDesc
+C2B00011 Invalid MSISDN
+C2B00012 Invalid Account Number
+C2B00013 Invalid Amount
+C2B00014 Invalid KYC Details
+C2B00015 Invalid Shortcode
+C2B00016 Other Error
+"""
