@@ -10,8 +10,11 @@ import aiohttp
 
 from fastapi import FastAPI
 
-# Authentication and Others
+# Authentication
 from mpesa_client.generate_oauth_token import router as generate_token_routes
+
+# Confirmation:
+from mpesa_confirmation.confirmation import router as mpesa_confirmation_routes
 
 
 SIZE_POOL_AIOHTTP = 200
@@ -129,10 +132,16 @@ MPESA Daraja API documentation can be found at https://developer.safaricom.co.ke
 """
 
 app = FastAPI(docs_url="/", on_startup=[on_start_up], on_shutdown=[on_shutdown], title="FastAPI Daraja",
-              description=api_description, version="1.0.0")
+              description=api_description, version="1.0.0", swagger_ui_parameters={"defaultModelsExpandDepth": -1})
+
+# Hide the models by adding the parametre: swagger_ui_parameters={"defaultModelsExpandDepth": -1}
+
+# Mount the folders:
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+# add the routers:
 app.include_router(generate_token_routes)
+app.include_router(mpesa_confirmation_routes)
 
 
 # Page not found exception handler
