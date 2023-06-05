@@ -78,7 +78,7 @@ async def mpesa_lipa_na_mpesa_resource(response: Response, lipa_na_mpesa_request
     if mpesa_token_response.success:
         lipa_na_mpesa_response = await initiate_lipa_na_mpesa_payment(lipa_na_mpesa_request, mpesa_token_response.access_token)
         if lipa_na_mpesa_response.ResponseCode == "0":
-
+            pass
 
     return lipa_na_mpesa_response_model
 
