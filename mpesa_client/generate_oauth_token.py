@@ -89,4 +89,6 @@ async def mpesa_generate_oauth_token(username: str, password: str):
         mpesa_token_response_model.expires_in = response["expires_in"]
         mpesa_token_response_model.success = True
 
+    print(mpesa_token_response_model)
+
     return mpesa_token_response_model

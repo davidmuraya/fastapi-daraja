@@ -118,7 +118,7 @@ async def initiate_lipa_na_mpesa_payment(lipa_na_mpesa_request: LipaNaMpesaReque
         lipa_na_mpesa_response.CustomerMessage = response["CustomerMessage"]
         lipa_na_mpesa_response.MerchantRequestID = response["MerchantRequestID"]
 
-    if "errorMessage" in response:
-        lipa_na_mpesa_response.ResponseDescription = response["errorMessage"]
+    if "errorMessage" in response["response"]:
+        lipa_na_mpesa_response.ResponseDescription = "error occurred"
 
     return lipa_na_mpesa_response

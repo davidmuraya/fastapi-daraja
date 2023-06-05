@@ -77,6 +77,7 @@ class Http:
                        "url": url,
                        "httpmethod": "get",
                        "headers": headers,
+                       "response_status": f"{response.status}, {response.reason}",
                        "success": False}
 
             return payload
@@ -114,6 +115,7 @@ class Http:
                        "url": url,
                        "httpmethod": "post",
                        "headers": headers,
+                       "response_status": f"{response.status}, {response.reason}",
                        "success": False}
 
             return payload
