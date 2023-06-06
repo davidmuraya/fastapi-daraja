@@ -50,8 +50,8 @@ async def mpesa_simulate_paybill_request_resource(response: Response, c2b_mpesa_
     c2b_response_model = C2BMpesaResponse()
 
     # get a token:
-    username = sandbox.consumer_key
-    password = sandbox.consumer_secret
+    username = sandbox.c2b_consumer_key
+    password = sandbox.c2b_consumer_secret
 
     mpesa_token_response = await generate_oauth_token.mpesa_generate_oauth_token(username, password)
 

@@ -56,7 +56,7 @@ class Http:
                     _response = await response.text()
                     payload = {"response": _response,
                                "url": url,
-                               "httpmethod": "get",
+                               "http_method": "get",
                                "headers": headers,
                                "response_status": f"{response.status}, {response.reason}",
                                "success": False}
@@ -67,7 +67,7 @@ class Http:
         except aiohttp.ClientConnectorError:
             payload = {"error": "Cannot connect to host.",
                        "url": url,
-                       "httpmethod": "get",
+                       "http_method": "get",
                        "headers": headers,
                        "success": False}
 
@@ -75,7 +75,7 @@ class Http:
         except Exception as e:
             payload = {"error": str(e),
                        "url": url,
-                       "httpmethod": "get",
+                       "http_method": "get",
                        "headers": headers,
                        "response_status": f"{response.status}, {response.reason}",
                        "success": False}
@@ -94,7 +94,7 @@ class Http:
                     _response = await response.text()
                     payload = {"response": _response,
                                "url": url,
-                               "httpmethod": "postString",
+                               "http_method": "postString",
                                "headers": headers,
                                "response_status": f"{response.status}, {response.reason}",
                                "success": False}
@@ -105,7 +105,7 @@ class Http:
         except aiohttp.ClientConnectorError:
             payload = {"error": "Cannot connect to host",
                        "url": url,
-                       "httpmethod": "post",
+                       "http_method": "post",
                        "headers": headers,
                        "success": False}
 
@@ -113,7 +113,7 @@ class Http:
         except Exception as e:
             payload = {"error": str(e),
                        "url": url,
-                       "httpmethod": "post",
+                       "http_method": "post",
                        "headers": headers,
                        "response_status": f"{response.status}, {response.reason}",
                        "success": False}

@@ -3,7 +3,7 @@ from datetime import datetime
 import time
 import json
 
-from fastapi import APIRouter, Header
+from fastapi import APIRouter, Header, HTTPException
 from fastapi import Response, status, BackgroundTasks
 from pydantic import BaseModel
 
@@ -26,7 +26,7 @@ transaction_date_time = (datetime.today()).strftime('%Y%m%d%H%M%S')
 
 # encode passkey, a base64 encoded string.
 # (The base64 string is a combination of Shortcode+Passkey+Timestamp)
-passkey = sandbox.lipa_na_mpesa_business_short_code + sandbox.passkey + transaction_date_time
+passkey = sandbox.lipa_na_mpesa_business_short_code + sandbox.lipa_na_mpesa_passkey + transaction_date_time
 
 encoded_password = utils.base64encoder(passkey)
 
@@ -39,7 +39,7 @@ class LipaNaMpesaRequest(BaseModel):
     Password: str = encoded_password
     Timestamp: str = transaction_date_time
     TransactionType: str = "CustomerBuyGoodsOnline"
-    Amount: str = "0"
+    Amount: float = 0.00
     PartyA: str = "254720928891"
     PartyB: str = sandbox.lipa_na_mpesa_business_short_code
     PhoneNumber: str = "254720928891"
@@ -69,9 +69,12 @@ async def mpesa_lipa_na_mpesa_resource(response: Response, lipa_na_mpesa_request
 
     lipa_na_mpesa_response_model = LipaNaMpesaResponse()
 
+    if lipa_na_mpesa_request.Amount <= 0:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Amount must be greater than 0")
+
     # get a token:
-    username = sandbox.consumer_key
-    password = sandbox.consumer_secret
+    username = sandbox.lipa_na_mpesa_consumer_key
+    password = sandbox.lipa_na_mpesa_consumer_secret
 
     mpesa_token_response = await generate_oauth_token.mpesa_generate_oauth_token(username, password)
 
@@ -119,6 +122,13 @@ async def initiate_lipa_na_mpesa_payment(lipa_na_mpesa_request: LipaNaMpesaReque
         lipa_na_mpesa_response.MerchantRequestID = response["MerchantRequestID"]
 
     if "errorMessage" in response["response"]:
-        lipa_na_mpesa_response.ResponseDescription = "error occurred"
+
+        # convert the error back to a dict:
+        error = json.loads(response["response"])
+
+        error_code = error["errorCode"]
+        error_message = error["errorMessage"]
+
+        lipa_na_mpesa_response.ResponseDescription = f"{error_code}, {error_message}"
 
     return lipa_na_mpesa_response
