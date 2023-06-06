@@ -92,6 +92,7 @@ async def c2b_mpesa_confirmation_resource(background_tasks: BackgroundTasks, res
 
     # performance monitoring
     request_time = time.perf_counter() - start
+
     print(request_time)
 
     return payment_confirmation
