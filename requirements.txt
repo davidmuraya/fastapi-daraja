@@ -8,6 +8,7 @@ pandas==1.0.5
 gunicorn==20.1.0
 uvloop==0.15.2
 httptools==0.1.1
+httpx==0.24.1
 python-jose==3.3.0
 passlib==1.7.4
 python-multipart==0.0.5

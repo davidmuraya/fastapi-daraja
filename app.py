@@ -147,8 +147,8 @@ app = FastAPI(docs_url="/", on_startup=[on_start_up], on_shutdown=[on_shutdown],
 
 # Hide the models by adding the parameter: swagger_ui_parameters={"defaultModelsExpandDepth": -1}
 
-# Mount the folders:
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# Mount the folders: Add your files when creating jinja2 templates
+# app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # add the routers:
 app.include_router(generate_token_routes)
