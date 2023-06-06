@@ -34,14 +34,6 @@ class PaymentValidation(BaseModel):
     ResultDesc: str = "Accepted"
 
 
-def some_function(customer_number: str):
-    # check if the client is valid here:
-
-    validation_response = {}
-
-    return validation_response
-
-
 api_summary = "Mpesa Confirmation End-point"
 api_description = "This API processes a receipt."
 
@@ -85,9 +77,9 @@ async def c2b_mpesa_validation_resource(background_tasks: BackgroundTasks, respo
 
         # value supplied was not an integer
         # do further validation:
-        policy_number_check_response = some_function(c2b_mpesa_request.InvoiceNumber)
+        customer_check_response = customer_check_function(c2b_mpesa_request.InvoiceNumber)
 
-        if policy_number_check_response.success:
+        if customer_check_response.success:
 
             response.status_code = status.HTTP_200_OK
 
@@ -102,6 +94,14 @@ async def c2b_mpesa_validation_resource(background_tasks: BackgroundTasks, respo
     request_time = time.perf_counter() - start
 
     return payment_validation
+
+
+def customer_check_function(customer_number: str):
+    # check if the client/customer is valid here:
+
+    validation_response = {}
+
+    return validation_response
 
 
 """
