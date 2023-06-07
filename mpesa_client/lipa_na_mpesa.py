@@ -5,7 +5,7 @@ import json
 
 from fastapi import APIRouter, Header, HTTPException
 from fastapi import Response, status, BackgroundTasks
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 from mpesa_client import settings
 from mpesa_client import utils
@@ -21,23 +21,33 @@ router = APIRouter(prefix="/app/v1")
 sandbox = settings.MpesaSandboxSettings()
 
 
-# Safaricom date format is YYYYMMDDHHMMSS:
-transaction_date_time = (datetime.today()).strftime('%Y%m%d%H%M%S')
-
-# encode passkey, a base64 encoded string.
-# (The base64 string is a combination of Shortcode+Passkey+Timestamp)
-passkey = sandbox.lipa_na_mpesa_business_short_code + sandbox.lipa_na_mpesa_passkey + transaction_date_time
-
-encoded_password = utils.base64encoder(passkey)
-
 # Safaricom Lipa Na Mpesa URL:
 # https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest
 
+def get_encoded_password() -> str:
+
+    # Safaricom date format is YYYYMMDDHHMMSS:
+    transaction_date_time = (datetime.today()).strftime('%Y%m%d%H%M%S')
+
+    # encode passkey, a base64 encoded string.
+    # (The base64 string is a combination of Shortcode+Passkey+Timestamp)
+    passkey = sandbox.lipa_na_mpesa_business_short_code + sandbox.lipa_na_mpesa_passkey + transaction_date_time
+    encoded_password = utils.base64encoder(passkey)
+
+    return encoded_password
+
+
+def get_transaction_time() -> str:
+    # Safaricom date format is YYYYMMDDHHMMSS:
+    transaction_date_time = (datetime.today()).strftime('%Y%m%d%H%M%S')
+    return transaction_date_time
+
 
 class LipaNaMpesaRequest(BaseModel):
+
     BusinessShortCode: str = sandbox.lipa_na_mpesa_business_short_code
-    Password: str = encoded_password
-    Timestamp: str = transaction_date_time
+    Password: str = ""
+    Timestamp: str = ""
     TransactionType: str = "CustomerBuyGoodsOnline"
     Amount: float = 0.00
     PartyA: str = "254720928891"
@@ -46,6 +56,10 @@ class LipaNaMpesaRequest(BaseModel):
     CallBackURL: str = sandbox.lipa_na_mpesa_callback_url
     AccountReference: str = "Test"
     TransactionDesc: str = "Test"
+
+    # todo validators:
+    # encoded_password = validator('Password', allow_reuse=True)(get_encoded_password)
+    # time_stamp = validator('Timestamp', allow_reuse=True)(get_transaction_time)
 
 
 class LipaNaMpesaResponse(BaseModel):
@@ -69,6 +83,7 @@ async def mpesa_lipa_na_mpesa_resource(response: Response, lipa_na_mpesa_request
 
     lipa_na_mpesa_response_model = LipaNaMpesaResponse()
 
+    # requested amount must be greater than 0:
     if lipa_na_mpesa_request.Amount <= 0:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Amount must be greater than 0")
 
@@ -79,6 +94,10 @@ async def mpesa_lipa_na_mpesa_resource(response: Response, lipa_na_mpesa_request
     mpesa_token_response = await generate_oauth_token.mpesa_generate_oauth_token(username, password)
 
     if mpesa_token_response.success:
+
+        lipa_na_mpesa_request.Password = get_encoded_password()
+        lipa_na_mpesa_request.Timestamp = get_transaction_time()
+
         lipa_na_mpesa_response = await initiate_lipa_na_mpesa_payment(lipa_na_mpesa_request, mpesa_token_response.access_token)
 
         lipa_na_mpesa_response_model = lipa_na_mpesa_response

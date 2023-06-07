@@ -77,7 +77,7 @@ async def c2b_mpesa_confirmation_resource(background_tasks: BackgroundTasks, res
     payment_confirmation = PaymentConfirmation()
 
     # check if request invoice number is numeric:
-    if c2b_mpesa_request.InvoiceNumber.isnumeric():
+    if c2b_mpesa_request.BillRefNumber.isnumeric():
         # do validation here:
         # then:
         receipt = create_receipt(c2b_mpesa_request, transaction_date)

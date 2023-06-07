@@ -62,7 +62,7 @@ async def c2b_mpesa_validation_resource(background_tasks: BackgroundTasks, respo
     payment_validation = PaymentValidation()
 
     # check if request invoice number is numeric:
-    if c2b_mpesa_request.InvoiceNumber.isnumeric():
+    if c2b_mpesa_request.BillRefNumber.isnumeric():
 
         # try and convert to int:
         id = int(c2b_mpesa_request.InvoiceNumber)
