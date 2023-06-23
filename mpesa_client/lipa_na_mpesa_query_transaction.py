@@ -10,6 +10,7 @@ import app
 
 from typing import Optional, List, Union
 from mpesa_client import settings
+from mpesa_client.models import LipaNaMpesaQueryResponse, LipaNaMpesaQueryRequest
 
 router = APIRouter(prefix="/app/v1")
 
@@ -19,23 +20,6 @@ sandbox = settings.MpesaSandboxSettings()
 
 # Safaricom Lipa Na Mpesa Query URL:
 # https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query
-
-class LipaNaMpesaQueryRequest(BaseModel):
-    BusinessShortCode: str  # ": "174379",
-    Password: str  # ": "MTc0Mzc5YmZiMjc5TliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMTYwMjE2MTY1NjI3",
-    Timestamp: str  # ": "20160216165627",
-    CheckoutRequestID: str  # "ws_CO_260520211133524545",
-
-
-class LipaNaMpesaQueryResponse(BaseModel):
-    ResponseCode: str = ""  # ": "0",
-    ResponseDescription: str = ""  # ": "The service request has been accepted successsfully",
-    MerchantRequestID: str = "" # ": "100914-5655540-2",
-    CheckoutRequestID: str = "" # ": "ws_CO_23062023170648877720928891",
-    ResultCode: str  = "" # "1032",
-    ResultDesc: str = "" # "Request cancelled by user"
-    Success: bool = False
-
 
 # Define the summary and description for this API:
 api_summary = "Lipa na M-Pesa Query End-point"
@@ -74,7 +58,6 @@ async def mpesa_lipa_na_mpesa_query_resource(response: Response, lipa_na_mpesa_c
 
 async def query_lipa_na_mpesa_payment_status(lipa_na_mpesa_query_request: LipaNaMpesaQueryRequest,
                                              bearer: str) -> LipaNaMpesaQueryResponse:
-
     lipa_na_mpesa_query_response = LipaNaMpesaQueryResponse()
 
     # https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query
@@ -119,4 +102,3 @@ async def query_lipa_na_mpesa_payment_status(lipa_na_mpesa_query_request: LipaNa
     print(f"lipa_na_mpesa_query_response: {lipa_na_mpesa_query_response}")
 
     return lipa_na_mpesa_query_response
-

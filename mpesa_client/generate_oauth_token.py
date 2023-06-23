@@ -5,6 +5,7 @@ from fastapi import APIRouter
 from fastapi import Depends, Response, status, HTTPException, Header
 from pydantic import BaseModel
 from mpesa_client import settings
+from mpesa_client.models import MpesaTokenResponseModel
 
 # Create an API router
 router = APIRouter(prefix="/app/v1")
@@ -18,14 +19,6 @@ sandbox = settings.MpesaSandboxSettings()
 server = sandbox.sandbox_url
 oauth_resource = 'oauth/v1/'
 token_end_point = "generate?grant_type=client_credentials"
-
-
-# Define the response model for Mpesa token
-class MpesaTokenResponseModel(BaseModel):
-    access_token: str = ""
-    expires_in: int = 0
-    success: bool = False
-    error: Optional[str]
 
 
 # Define the summary and description for the API

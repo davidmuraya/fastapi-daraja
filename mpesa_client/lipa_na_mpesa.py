@@ -3,8 +3,8 @@ import json
 
 from fastapi import APIRouter, Header, HTTPException
 from fastapi import Response, status, BackgroundTasks
-from pydantic import BaseModel, validator
 from mpesa_client import utils
+from mpesa_client.models import LipaNaMpesaResponse, LipaNaMpesaRequest, LipaNaMpesa
 
 from mpesa_client import generate_oauth_token
 import app
@@ -20,47 +20,6 @@ sandbox = settings.MpesaSandboxSettings()
 
 # Safaricom Lipa Na Mpesa URL:
 # https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest
-
-class LipaNaMpesaRequest(BaseModel):
-
-    BusinessShortCode: str = sandbox.lipa_na_mpesa_business_short_code
-    TransactionType: str = "CustomerPayBillOnline"
-    Amount: float = 0.00
-    PartyA: str = "254708374149"
-    PartyB: str = sandbox.lipa_na_mpesa_business_short_code
-    PhoneNumber: str = "254720928891"
-    CallBackURL: str = sandbox.lipa_na_mpesa_callback_url
-    AccountReference: str = "jw101000"
-    TransactionDesc: str = "Test"
-
-    # todo validators:
-    # encoded_password = validator('Password', allow_reuse=True)(get_encoded_password)
-    # time_stamp = validator('Timestamp', allow_reuse=True)(get_transaction_time)
-
-
-class LipaNaMpesa(BaseModel):
-
-    BusinessShortCode: str = sandbox.lipa_na_mpesa_business_short_code
-    Password: str = ""
-    Timestamp: str = ""
-    TransactionType: str = "CustomerPayBillOnline"
-    Amount: float = 0.00
-    PartyA: str = "254708374149"
-    PartyB: Optional[str]
-    PhoneNumber: str = "254720928891"
-    CallBackURL: str = sandbox.lipa_na_mpesa_callback_url
-    AccountReference: str = "jw101000"
-    TransactionDesc: str = "Test"
-
-
-class LipaNaMpesaResponse(BaseModel):
-    MerchantRequestID: str = ""  # "29115-34620561-1",
-    CheckoutRequestID: str = ""  # "ws_CO_191220191020363925",
-    ResponseCode: str = "-1"  # Default value
-    ResponseDescription: str = ""  # "Success. Request accepted for processing",
-    CustomerMessage: str = ""  # "Success. Request accepted for processing"
-    Success: bool = False
-
 
 # Define the summary and description for this API:
 api_summary = "Lipa na M-Pesa End-point"
