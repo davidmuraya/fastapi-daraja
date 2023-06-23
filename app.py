@@ -13,6 +13,7 @@ from fastapi import FastAPI
 # M-Pesa Client
 from mpesa_client.generate_oauth_token import router as generate_token_routes
 from mpesa_client.lipa_na_mpesa import router as lipa_na_mpesa_routes
+from mpesa_client.lipa_na_mpesa_query_transaction import router as lipa_na_mpesa_query_status
 from mpesa_client.simulate_c2b_payment import router as simulate_c2b_routes
 
 # Confirmation:
@@ -155,6 +156,7 @@ app.include_router(generate_token_routes)
 app.include_router(mpesa_confirmation_routes)
 app.include_router(mpesa_validation_routes)
 app.include_router(lipa_na_mpesa_routes)
+app.include_router(lipa_na_mpesa_query_status)
 app.include_router(simulate_c2b_routes)
 
 

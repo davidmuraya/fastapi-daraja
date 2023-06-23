@@ -14,8 +14,8 @@ class MpesaSandboxSettings(BaseModel):
     lipa_na_mpesa_passkey: str = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
     c2b_confirmation_url = ""
     c2b_validation_url = ""
-    lipa_na_mpesa_callback_url = "https://demo.bima-mo.com/receipts/payment-confirmation?authorization_code=v&confirmation_code=c"
-    lipa_na_mpesa_business_short_code = "503100"
+    lipa_na_mpesa_callback_url = "https://demo.bima-mo.com/app/receipts/payment-confirmation?confirmation_code=c"
+    lipa_na_mpesa_business_short_code = "174379"
 
 
 class MpesaProductionSettings(BaseModel):

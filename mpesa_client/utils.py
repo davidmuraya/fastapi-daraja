@@ -1,5 +1,11 @@
 import base64
 import re
+from datetime import datetime
+import time
+from mpesa_client import settings
+
+# Initialize MpesaSandboxSettings
+sandbox = settings.MpesaSandboxSettings()
 
 
 def base64encoder(string_to_encode: str) -> str:
@@ -30,3 +36,23 @@ def format_phone_number(phone_number: str) -> str:
         return phone_number.replace("0", "254", 1)
 
     return phone_number
+
+
+def get_encoded_password() -> str:
+
+    # Safaricom date format is YYYYMMDDHHMMSS:
+    transaction_date_time = (datetime.today()).strftime('%Y%m%d%H%M%S')
+
+    # encode passkey, a base64 encoded string.
+    # (The base64 string is a combination of Shortcode+Passkey+Timestamp)
+    passkey = sandbox.lipa_na_mpesa_business_short_code + sandbox.lipa_na_mpesa_passkey + transaction_date_time
+    encoded_password = base64encoder(passkey)
+
+    return encoded_password
+
+
+def get_transaction_time() -> str:
+    # Safaricom date format is YYYYMMDDHHMMSS:
+    transaction_date_time = (datetime.today()).strftime('%Y%m%d%H%M%S')
+    return transaction_date_time
+

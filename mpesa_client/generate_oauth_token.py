@@ -72,7 +72,7 @@ async def mpesa_generate_oauth_token(username: str, password: str):
     # Make a request to generate the Mpesa token
     response = await app.Http.get(url, headers=headers, username=username, password=password)
 
-    print(response)
+    print(f"token response: {response}")
 
     # Create a model to store the token response
     mpesa_token_response_model = MpesaTokenResponseModel()
@@ -89,6 +89,6 @@ async def mpesa_generate_oauth_token(username: str, password: str):
         mpesa_token_response_model.expires_in = response["expires_in"]
         mpesa_token_response_model.success = True
 
-    print(mpesa_token_response_model)
+    print(f"mpesa_token_response_model: {mpesa_token_response_model}")
 
     return mpesa_token_response_model
