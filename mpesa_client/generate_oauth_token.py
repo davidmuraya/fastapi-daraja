@@ -1,4 +1,4 @@
-import app
+from http_client import Http
 from typing import Optional, List, Union
 
 from fastapi import APIRouter
@@ -63,7 +63,7 @@ async def mpesa_generate_oauth_token(username: str, password: str):
     headers = {}
 
     # Make a request to generate the Mpesa token
-    response = await app.Http.get(url, headers=headers, username=username, password=password)
+    response = await Http.get(url, headers=headers, username=username, password=password)
 
     print(f"token response: {response}")
 

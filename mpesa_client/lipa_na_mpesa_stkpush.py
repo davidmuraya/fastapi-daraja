@@ -7,7 +7,7 @@ from mpesa_client import utils
 from mpesa_client.models import LipaNaMpesaResponse, LipaNaMpesaRequest, LipaNaMpesa
 
 from mpesa_client import generate_oauth_token
-import app
+from http_client import Http
 
 from typing import Optional, List, Union
 from mpesa_client import settings
@@ -89,7 +89,7 @@ async def initiate_lipa_na_mpesa_payment(lipa_na_mpesa_request: LipaNaMpesa, bea
     print(f"param: {param}")
 
     # Make a request to generate the STK Push:
-    response = await app.Http.post(url, headers=headers, data=param)
+    response = await Http.post(url, headers=headers, data=param)
 
     print(response)
 

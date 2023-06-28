@@ -6,7 +6,7 @@ from pydantic import BaseModel, validator
 from mpesa_client import utils
 
 from mpesa_client import generate_oauth_token
-import app
+from http_client import Http
 
 from typing import Optional, List, Union
 from mpesa_client import settings
@@ -76,7 +76,7 @@ async def query_lipa_na_mpesa_payment_status(lipa_na_mpesa_query_request: LipaNa
     print(f"param: {param}")
 
     # Make a request to generate the STK Push:
-    response = await app.Http.post(url, headers=headers, data=param)
+    response = await Http.post(url, headers=headers, data=param)
 
     print(response)
 

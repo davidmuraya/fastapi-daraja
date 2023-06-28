@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 from mpesa_client import settings
 from mpesa_client import generate_oauth_token
-import app
+from http_client import Http
 
 from typing import Optional, List, Union
 
@@ -85,7 +85,7 @@ async def simulate_c2b_mpesa_request(c2b_mpesa_request: SimulateC2BMpesaRequest,
     print(param)
 
     # Make a request to simulate the paybill payment:
-    response = await app.Http.post(url, headers=headers, data=param)
+    response = await Http.post(url, headers=headers, data=param)
 
     print(response)
 
