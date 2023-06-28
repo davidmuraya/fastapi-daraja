@@ -8,6 +8,16 @@ class MpesaSandboxSettings(BaseModel):
     """
     Please consider storing these values in a secure location e.g. firestore
     populate a .env file with the following values:
+    # M-Pesa Sandbox Settings:
+        C2B_CONSUMER_KEY=""
+        C2B_CONSUMER_SECRET=""
+        LIPA_NA_MPESA_CONSUMER_KEY=""
+        LIPA_NA_MPESA_CONSUMER_SECRET=""
+        LIPA_NA_MPESA_PASSKEY=""
+        C2B_CONFIRMATION_URL=""
+        C2B_VALIDATION_URL=""
+        LIPA_NA_MPESA_CALLBACK_URL=""
+        LIPA_NA_MPESA_BUSINESS_SHORT_CODE=""
 
     """
 
