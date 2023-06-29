@@ -1,0 +1,13 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: uvicorn app.main:app --host 0.0.0.0
+    container_name: fastapi-daraja
+    environment:
+      - PORT=8000
+    ports:
+      - '8000:8000'
+

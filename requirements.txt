@@ -1,7 +1,7 @@
-fastapi==0.88.0
-uvicorn==0.20.0
-asyncio==3.4.3
-aiohttp==3.7.4.post0
+fastapi
+uvicorn
+asyncio
+aiohttp
 
 pandas==1.0.5
 
