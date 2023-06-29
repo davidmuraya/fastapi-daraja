@@ -2,15 +2,13 @@
 import json
 
 from fastapi import APIRouter, Header, HTTPException
-from fastapi import Response, status, BackgroundTasks
-from mpesa_client import utils
-from mpesa_client.models import LipaNaMpesaResponse, LipaNaMpesaRequest, LipaNaMpesa
+from fastapi import Response, status
+from app.mpesa_client import utils, settings, generate_oauth_token
+from app.mpesa_client.models import LipaNaMpesaResponse, LipaNaMpesaRequest, LipaNaMpesa
 
-from mpesa_client import generate_oauth_token
-from http_client import Http
+from app.http_client import Http
 
-from typing import Optional, List, Union
-from mpesa_client import settings
+from typing import Union
 
 router = APIRouter(prefix="/app/v1")
 

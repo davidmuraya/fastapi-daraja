@@ -1,8 +1,7 @@
 import base64
 import re
 from datetime import datetime
-import time
-from mpesa_client import settings
+from app.mpesa_client import settings
 
 # Initialize MpesaSandboxSettings
 sandbox = settings.MpesaSandboxSettings()

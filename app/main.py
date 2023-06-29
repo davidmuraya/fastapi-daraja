@@ -1,10 +1,9 @@
 
 import uvicorn
 
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 
-from http_client import on_start_up, on_shutdown
+from app.http_client import on_start_up, on_shutdown
 
 from fastapi import FastAPI
 

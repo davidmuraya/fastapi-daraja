@@ -2,14 +2,13 @@
 import json
 
 from fastapi import APIRouter, Header
-from fastapi import Response, status, BackgroundTasks
+from fastapi import Response, status
 from pydantic import BaseModel
 
-from mpesa_client import settings
-from mpesa_client import generate_oauth_token
-from http_client import Http
+from app.mpesa_client import settings, generate_oauth_token
+from app.http_client import Http
 
-from typing import Optional, List, Union
+from typing import Union
 
 
 router = APIRouter(prefix="/app/v1")

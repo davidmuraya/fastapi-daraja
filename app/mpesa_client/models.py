@@ -1,7 +1,7 @@
 
 from pydantic import BaseModel
-from typing import Optional, List, Union
-from mpesa_client import settings
+from typing import Optional
+from app.mpesa_client import settings
 
 # Initialize MpesaSandboxSettings
 sandbox = settings.MpesaSandboxSettings()

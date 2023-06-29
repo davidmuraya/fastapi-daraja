@@ -1,11 +1,10 @@
-from http_client import Http
-from typing import Optional, List, Union
+from app.http_client import Http
+from typing import Union
 
 from fastapi import APIRouter
-from fastapi import Depends, Response, status, HTTPException, Header
-from pydantic import BaseModel
-from mpesa_client import settings
-from mpesa_client.models import MpesaTokenResponseModel
+from fastapi import Response, status, Header
+from app.mpesa_client import settings
+from app.mpesa_client.models import MpesaTokenResponseModel
 
 # Create an API router
 router = APIRouter(prefix="/app/v1")
