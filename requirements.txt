@@ -3,25 +3,20 @@ uvicorn
 asyncio
 aiohttp
 
-pandas==1.0.5
+pandas
 
-gunicorn==20.1.0
-uvloop==0.15.2
-httptools==0.1.1
-httpx==0.24.1
-python-jose==3.3.0
-passlib==1.7.4
-python-multipart==0.0.5
-bcrypt==3.1.7
+gunicorn
+uvloop
+httptools
+httpx
+python-jose
+passlib
+python-multipart
+bcrypt
 
-jinja2==3.1.2
-aiofiles==0.6.0
+jinja2
+aiofiles
 
-pydantic==1.10.4
-requests==2.28.1
-lxml==4.9.2
-
-
-openpyxl==3.0.10
-python-dotenv==1.0.0
+pydantic
+python-dotenv
 
