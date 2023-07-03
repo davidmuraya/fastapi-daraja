@@ -11,4 +11,4 @@ services:
       - .env
     ports:
       - "8000:8000"
-    restart: "no"
+    restart: "always"
