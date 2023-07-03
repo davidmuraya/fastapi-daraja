@@ -45,7 +45,7 @@ LIPA_NA_MPESA_CALLBACK_URL="xxxx"
 LIPA_NA_MPESA_BUSINESS_SHORT_CODE="xxx"
 ```
 
-### Python/FastAPI application
+### Python/FastAPI Daraja App
 Project structure:
 ```
 ├── docker-compose.yml
