@@ -10,6 +10,26 @@ aiohttp is a versatile asynchronous HTTP client/server framework for Python that
 
 MPESA Daraja API documentation can be found at https://developer.safaricom.co.ke
 
+The technology stack used to create the backend of this application is as follows:
+
+- Framework
+    - FastAPI and Starlette
+- ASGI Server
+    - Uvicorn and Gunicorn
+- Containerization
+    - Docker
+- Database
+    - 
+- Authentication
+    - Bcrypt
+    - Passlib
+    - JWT Tokens with Pyjwt
+- Testing
+    - Pytest
+- Development
+    - PyCharm
+
+
 # Configuration
 Please create a .env file in the app folder with your configuration:
 ```shell
@@ -23,6 +43,35 @@ C2B_CONFIRMATION_URL=""
 C2B_VALIDATION_URL=""
 LIPA_NA_MPESA_CALLBACK_URL="xxxx"
 LIPA_NA_MPESA_BUSINESS_SHORT_CODE="xxx"
+```
+
+### Python/FastAPI application
+Project structure:
+```
+├── docker-compose.yml
+├── Dockerfile
+├── requirements.txt
+├── app
+    ├── main.py
+    ├── __init__.py
+
+[_docker-compose.yml_](docker-compose.yml)
+```
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi-daraja
+    command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    restart: "always"
+
 ```
 
 # Deploy with docker compose
