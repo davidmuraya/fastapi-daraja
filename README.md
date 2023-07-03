@@ -55,6 +55,8 @@ Project structure:
     ├── main.py
     ├── __init__.py
 
+```
+
 [_docker-compose.yml_](docker-compose.yml)
 ```
 version: '3.8'
@@ -73,6 +75,8 @@ services:
     restart: "always"
 
 ```
+
+
 
 # Deploy with docker compose
 ```shell
