@@ -1,17 +1,19 @@
-from app.http_client import Http
+
 from typing import Union
 
 from fastapi import APIRouter
 from fastapi import Response, status, Header
-from app.mpesa_client import settings
+
+from app.http_client.http import Http
+from app.mpesa_client.settings import MpesaSandboxSettings
 from app.mpesa_client.models import MpesaTokenResponseModel
+
 
 # Create an API router
 router = APIRouter(prefix="/app/v1")
 
-
 # Initialize MpesaSandboxSettings
-sandbox = settings.MpesaSandboxSettings()
+sandbox = MpesaSandboxSettings()
 
 
 # Set the sandbox URL and endpoint for generating a token

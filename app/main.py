@@ -3,21 +3,21 @@ import uvicorn
 
 from fastapi.responses import RedirectResponse
 
-from app.http_client import on_start_up, on_shutdown
+from app.http_client.http import on_start_up, on_shutdown
 
 from fastapi import FastAPI
 
 # M-Pesa Client
-from mpesa_client.generate_oauth_token import router as generate_token_routes
-from mpesa_client.lipa_na_mpesa_stkpush import router as lipa_na_mpesa_routes
-from mpesa_client.lipa_na_mpesa_query_transaction import router as lipa_na_mpesa_query_status
-from mpesa_client.simulate_c2b_payment import router as simulate_c2b_routes
+from app.mpesa_client.generate_oauth_token import router as generate_token_routes
+from app.mpesa_client.lipa_na_mpesa_stkpush import router as lipa_na_mpesa_routes
+from app.mpesa_client.lipa_na_mpesa_query_transaction import router as lipa_na_mpesa_query_status
+from app.mpesa_client.simulate_c2b_payment import router as simulate_c2b_routes
 
 # Confirmation:
-from mpesa_confirmation.confirmation import router as mpesa_confirmation_routes
+from app.mpesa_confirmation.confirmation import router as mpesa_confirmation_routes
 
 # Validation
-from mpesa_validation.validation import router as mpesa_validation_routes
+from app.mpesa_validation.validation import router as mpesa_validation_routes
 
 
 api_description = """

@@ -9,3 +9,8 @@ For the M-Pesa client, this library uses the python asynchronous client called a
 aiohttp is a versatile asynchronous HTTP client/server framework for Python that supports both client and server-side applications.
 
 MPESA Daraja API documentation can be found at https://developer.safaricom.co.ke
+
+# Deploy with docker compose
+```shell
+docker-compose up -d --build
+```

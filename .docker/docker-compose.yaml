@@ -3,7 +3,7 @@ services:
     build:
       context: .
       target: dev-envs
-    container_name: fastapi-application
+    container_name: fastapi-daraja
     environment:
       PORT: 8000
     ports:

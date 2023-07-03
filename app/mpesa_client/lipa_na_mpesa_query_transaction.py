@@ -2,9 +2,10 @@ import json
 
 from fastapi import APIRouter, Header
 from fastapi import Response, status
-from app.mpesa_client import utils, settings, generate_oauth_token
+from app.mpesa_client import utils, generate_oauth_token
 
-from app.http_client import Http
+from app.http_client.http import Http
+from app.mpesa_client.settings import MpesaSandboxSettings
 
 from typing import Union
 from app.mpesa_client.models import LipaNaMpesaQueryResponse, LipaNaMpesaQueryRequest
@@ -12,8 +13,7 @@ from app.mpesa_client.models import LipaNaMpesaQueryResponse, LipaNaMpesaQueryRe
 router = APIRouter(prefix="/app/v1")
 
 # Initialize MpesaSandboxSettings
-sandbox = settings.MpesaSandboxSettings()
-
+sandbox = MpesaSandboxSettings()
 
 # Safaricom Lipa Na Mpesa Query URL:
 # https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query
